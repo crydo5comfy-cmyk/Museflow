@@ -1,0 +1,6 @@
+{
+  "name": "Museflow - Magic Writing & Thought Partner",
+  "description": "A distraction-free, fluid writing experience where AI acts as your true thought partner and proactive inline collaborator.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
