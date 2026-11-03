@@ -41,7 +41,6 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Focus input on mount
     inputRef.current?.focus();
   }, []);
 
@@ -57,24 +56,24 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
   };
 
   return (
-    <div className="my-3 p-3.5 rounded-2xl bg-white dark:bg-stone-900 border border-stone-300/80 dark:border-stone-700 shadow-2xl ring-1 ring-black/5 dark:ring-white/10 transition-all text-stone-800 dark:text-stone-100 animate-in fade-in zoom-in-95 duration-150">
+    <div className="my-4 p-4 rounded-2xl bg-black/55 backdrop-blur-2xl border border-white/20 shadow-[0_25px_60px_-10px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.25)] text-stone-100 animate-in fade-in zoom-in-95 duration-150">
       {/* Top bar: Scope selector + Close */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-stone-200 dark:border-stone-800">
-        <div className="flex items-center gap-1">
-          <span className="flex items-center gap-1 text-xs font-semibold text-amber-700 dark:text-amber-400 mr-1.5">
-            <Wand2 className="w-3.5 h-3.5" />
-            <span>Inline Co-Author</span>
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1.5 text-xs font-semibold text-amber-300 mr-1 drop-shadow-xs">
+            <Wand2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>Inline Glass Co-Author</span>
           </span>
 
           {/* Scope Pills */}
-          <div className="flex items-center bg-stone-100 dark:bg-stone-800 p-0.5 rounded-lg text-xs">
+          <div className="flex items-center bg-white/[0.08] backdrop-blur-md border border-white/10 p-0.5 rounded-xl text-xs">
             <button
               type="button"
               onClick={() => setScope('sentence')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition ${
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition ${
                 scope === 'sentence'
-                  ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white font-semibold shadow-xs'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+                  ? 'bg-white/20 text-white font-semibold shadow-xs'
+                  : 'text-stone-300 hover:text-white'
               }`}
               title="Rewrite only this targeted sentence or phrase"
             >
@@ -84,10 +83,10 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
             <button
               type="button"
               onClick={() => setScope('paragraph')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition ${
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition ${
                 scope === 'paragraph'
-                  ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white font-semibold shadow-xs'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+                  ? 'bg-white/20 text-white font-semibold shadow-xs'
+                  : 'text-stone-300 hover:text-white'
               }`}
               title="Rethink the whole paragraph to accommodate your note"
             >
@@ -97,10 +96,10 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
             <button
               type="button"
               onClick={() => setScope('article')}
-              className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition ${
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition ${
                 scope === 'article'
-                  ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white font-semibold shadow-xs'
-                  : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+                  ? 'bg-white/20 text-white font-semibold shadow-xs'
+                  : 'text-stone-300 hover:text-white'
               }`}
               title="Weave this feedback smoothly across the entire draft"
             >
@@ -114,7 +113,7 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
           type="button"
           onClick={onClose}
           disabled={isLoading}
-          className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 p-1 rounded-md hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+          className="text-stone-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition"
         >
           <X className="w-4 h-4" />
         </button>
@@ -122,20 +121,20 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
 
       {/* Selected text preview snippet */}
       {selectedText && (
-        <div className="mb-2.5 px-2.5 py-1.5 rounded-lg bg-stone-50 dark:bg-stone-950/60 border border-stone-200/70 dark:border-stone-800 text-xs font-serif italic text-stone-600 dark:text-stone-400 line-clamp-2">
+        <div className="mb-3 px-3 py-2 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-xs font-serif italic text-stone-300 line-clamp-2">
           &ldquo;{selectedText}&rdquo;
         </div>
       )}
 
       {/* Preset Thought Chips */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 scrollbar-none">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2.5 mb-2 scrollbar-none">
         {PRESET_THOUGHTS.map((preset, idx) => (
           <button
             key={idx}
             type="button"
             disabled={isLoading}
             onClick={() => handlePresetClick(preset.prompt)}
-            className="shrink-0 px-2.5 py-1 text-[11px] font-medium rounded-full bg-stone-100 hover:bg-amber-100 hover:text-amber-900 dark:bg-stone-800 dark:hover:bg-amber-950/60 dark:hover:text-amber-200 text-stone-600 dark:text-stone-300 transition-colors border border-stone-200/60 dark:border-stone-700/60"
+            className="shrink-0 px-2.5 py-1 text-[11px] font-medium rounded-full bg-white/[0.06] hover:bg-white/[0.14] text-stone-200 hover:text-amber-200 border border-white/10 backdrop-blur-md transition-colors shadow-xs"
           >
             {preset.label}
           </button>
@@ -153,18 +152,18 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
             disabled={isLoading}
             placeholder={
               scope === 'sentence'
-                ? 'Tell your co-author how to rewrite this line...'
+                ? 'Tell your thought partner how to rewrite this line...'
                 : scope === 'paragraph'
                 ? 'How should we rethink this paragraph?'
                 : 'What strategic shift should we weave across the whole piece?'
             }
-            className="w-full pl-3.5 pr-10 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-xs text-stone-900 dark:text-white placeholder:text-stone-400"
+            className="w-full pl-4 pr-10 py-2.5 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 focus:outline-none focus:ring-1 focus:ring-amber-400/60 focus:border-amber-400/60 text-xs text-white placeholder:text-stone-500 shadow-inner"
           />
           {feedback && (
             <button
               type="button"
               onClick={() => setFeedback('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 text-xs"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs"
             >
               ×
             </button>
@@ -174,7 +173,7 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
         <button
           type="submit"
           disabled={!feedback.trim() || isLoading}
-          className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 active:bg-amber-800 disabled:opacity-50 text-white font-semibold text-xs transition shadow-sm"
+          className="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:from-amber-600 active:to-amber-700 disabled:opacity-40 text-black font-semibold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.3)] shrink-0"
         >
           {isLoading ? (
             <>
@@ -190,9 +189,9 @@ export const InlineThoughtBar: React.FC<InlineThoughtBarProps> = ({
         </button>
       </form>
 
-      <div className="flex items-center justify-between text-[10px] text-stone-400 dark:text-stone-500 mt-2 px-1">
+      <div className="flex items-center justify-between text-[10px] text-stone-400 mt-2 px-1">
         <span>No need to copy-paste into chat. Gemini iterates right here.</span>
-        <span>Scope: <strong>{scope}</strong></span>
+        <span>Scope: <strong className="text-amber-300">{scope}</strong></span>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { diffWordsWithSpace, diffLines } from 'diff';
+import { diffWordsWithSpace } from 'diff';
 import { Columns2, Rows3, Check, X, Sparkles, RefreshCw } from 'lucide-react';
 
 interface DiffViewerProps {
@@ -30,19 +30,19 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
   const wordDiff = diffWordsWithSpace(originalText || '', revisedText || '');
 
   return (
-    <div className="rounded-xl border border-amber-200/70 dark:border-amber-900/50 bg-amber-50/50 dark:bg-stone-900/80 backdrop-blur-md shadow-xl overflow-hidden p-4 text-stone-800 dark:text-stone-100 transition-all">
+    <div className="rounded-2xl border border-white/20 bg-black/60 backdrop-blur-2xl shadow-[0_25px_60px_-10px_rgba(0,0,0,0.65),inset_0_1px_1px_0_rgba(255,255,255,0.25)] overflow-hidden p-4 text-stone-100 transition-all">
       {/* Header bar with rationale & view switch */}
-      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-stone-200/80 dark:border-stone-800">
+      <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-white/10">
         <div className="flex items-center gap-2">
-          <span className="flex items-center justify-center w-6 h-6 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 font-semibold text-xs">
+          <span className="flex items-center justify-center w-6 h-6 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs shadow-xs">
             ✨
           </span>
           <div>
-            <span className="text-xs uppercase font-mono tracking-wider text-amber-700 dark:text-amber-400 font-semibold">
+            <span className="text-xs uppercase font-mono tracking-wider text-amber-300 font-semibold drop-shadow-xs">
               Proposed Rewrite ({scope || 'Selection'})
             </span>
             {diffSummary && (
-              <span className="ml-2 text-xs font-medium text-stone-500 dark:text-stone-400">
+              <span className="ml-2 text-xs font-medium text-stone-400">
                 — {diffSummary}
               </span>
             )}
@@ -50,14 +50,14 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
         </div>
 
         {/* View mode toggle */}
-        <div className="flex items-center gap-1 bg-stone-200/60 dark:bg-stone-800/80 p-0.5 rounded-lg text-xs">
+        <div className="flex items-center gap-1 bg-white/[0.08] backdrop-blur-md border border-white/10 p-0.5 rounded-xl text-xs">
           <button
             type="button"
             onClick={() => setViewMode('inline')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all ${
               viewMode === 'inline'
-                ? 'bg-white dark:bg-stone-700 font-medium text-stone-900 dark:text-white shadow-xs'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+                ? 'bg-white/20 font-semibold text-white shadow-xs'
+                : 'text-stone-400 hover:text-white'
             }`}
           >
             <Rows3 className="w-3.5 h-3.5" />
@@ -66,10 +66,10 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
           <button
             type="button"
             onClick={() => setViewMode('split')}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all ${
               viewMode === 'split'
-                ? 'bg-white dark:bg-stone-700 font-medium text-stone-900 dark:text-white shadow-xs'
-                : 'text-stone-600 dark:text-stone-400 hover:text-stone-900'
+                ? 'bg-white/20 font-semibold text-white shadow-xs'
+                : 'text-stone-400 hover:text-white'
             }`}
           >
             <Columns2 className="w-3.5 h-3.5" />
@@ -80,14 +80,14 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
 
       {/* Explanation pill */}
       {explanation && (
-        <div className="mb-3 px-3 py-2 rounded-lg bg-white/70 dark:bg-stone-800/60 border border-stone-200/50 dark:border-stone-700/50 text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-          <strong className="text-stone-800 dark:text-stone-200">Thought partner rationale: </strong>
+        <div className="mb-3 px-3 py-2 rounded-xl bg-white/[0.05] backdrop-blur-md border border-white/10 text-xs text-stone-300 leading-relaxed shadow-inner">
+          <strong className="text-amber-300">Thought partner rationale: </strong>
           {explanation}
         </div>
       )}
 
-      {/* Diff Content */}
-      <div className="rounded-lg bg-white dark:bg-stone-950 p-3.5 border border-stone-200/70 dark:border-stone-800 text-sm leading-relaxed max-h-80 overflow-y-auto font-serif">
+      {/* Diff Content Box */}
+      <div className="rounded-xl bg-black/40 backdrop-blur-md p-4 border border-white/10 text-sm leading-relaxed max-h-80 overflow-y-auto font-serif shadow-inner">
         {viewMode === 'inline' ? (
           <div className="whitespace-pre-wrap select-text">
             {wordDiff.map((part, index) => {
@@ -95,7 +95,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
                 return (
                   <span
                     key={index}
-                    className="bg-emerald-100 dark:bg-emerald-950/60 text-emerald-900 dark:text-emerald-200 font-medium px-0.5 rounded underline decoration-emerald-400/60 decoration-2"
+                    className="bg-emerald-500/25 text-emerald-200 border-b-2 border-emerald-400 font-medium px-1 rounded shadow-xs"
                   >
                     {part.value}
                   </span>
@@ -105,7 +105,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
                 return (
                   <span
                     key={index}
-                    className="bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-400 line-through decoration-rose-500/80 px-0.5 rounded opacity-75 mr-0.5"
+                    className="bg-rose-500/25 text-rose-300 line-through decoration-rose-400 px-1 rounded opacity-75 mr-0.5"
                   >
                     {part.value}
                   </span>
@@ -116,19 +116,19 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
-            <div className="p-2.5 rounded bg-rose-50/50 dark:bg-stone-900 border border-rose-100 dark:border-stone-800">
-              <div className="text-[10px] font-mono font-semibold uppercase text-rose-700 dark:text-rose-400 mb-1">
+            <div className="p-3 rounded-xl bg-rose-950/25 border border-rose-500/25 backdrop-blur-md">
+              <div className="text-[10px] font-mono font-semibold uppercase text-rose-400 mb-1">
                 Original Text
               </div>
-              <div className="whitespace-pre-wrap text-stone-700 dark:text-stone-300">
+              <div className="whitespace-pre-wrap text-stone-300">
                 {originalText}
               </div>
             </div>
-            <div className="p-2.5 rounded bg-emerald-50/50 dark:bg-stone-900 border border-emerald-100 dark:border-stone-800">
-              <div className="text-[10px] font-mono font-semibold uppercase text-emerald-700 dark:text-emerald-400 mb-1">
+            <div className="p-3 rounded-xl bg-emerald-950/25 border border-emerald-500/25 backdrop-blur-md">
+              <div className="text-[10px] font-mono font-semibold uppercase text-emerald-400 mb-1">
                 Revised Version
               </div>
-              <div className="whitespace-pre-wrap text-stone-900 dark:text-stone-100 font-medium">
+              <div className="whitespace-pre-wrap text-emerald-100 font-medium">
                 {revisedText}
               </div>
             </div>
@@ -137,9 +137,9 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
       </div>
 
       {/* Action buttons */}
-      <div className="flex items-center justify-between gap-3 mt-3.5 pt-2 border-t border-stone-200/60 dark:border-stone-800/80">
-        <div className="text-[11px] text-stone-500 dark:text-stone-400">
-          Accepting replaces {scope || 'target'} in your draft.
+      <div className="flex items-center justify-between gap-3 mt-3.5 pt-2 border-t border-white/10">
+        <div className="text-[11px] text-stone-400">
+          Accepting weaves change into {scope || 'target'} in your draft.
         </div>
         <div className="flex items-center gap-2">
           {onRefineAgain && (
@@ -147,7 +147,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
               type="button"
               onClick={onRefineAgain}
               disabled={isLoading}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-stone-800 transition"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-stone-300 hover:text-white bg-white/[0.06] hover:bg-white/[0.12] border border-white/10 backdrop-blur-md transition shadow-xs"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Try Another Take</span>
@@ -157,7 +157,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
             type="button"
             onClick={onReject}
             disabled={isLoading}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-stone-300 hover:text-white bg-white/[0.04] hover:bg-white/[0.1] border border-white/10 transition"
           >
             <X className="w-3.5 h-3.5" />
             <span>Discard</span>
@@ -166,7 +166,7 @@ export const DiffViewer: React.FC<DiffViewerProps> = ({
             type="button"
             onClick={onAccept}
             disabled={isLoading}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-sm transition"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 active:from-emerald-600 active:to-teal-700 text-white shadow-[0_0_15px_rgba(16,185,129,0.35)] transition"
           >
             <Check className="w-3.5 h-3.5" />
             <span>Accept Change</span>

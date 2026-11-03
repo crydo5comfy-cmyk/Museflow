@@ -4,12 +4,12 @@ import {
   Feather,
   Share2,
   FilePlus,
-  Maximize2,
   Minimize2,
   Columns,
   LogOut,
   ChevronDown,
-  CloudCheck,
+  History,
+  Palette,
 } from 'lucide-react';
 import { GoogleSignInButton } from './GoogleSignInButton.tsx';
 import type { User } from 'firebase/auth';
@@ -23,6 +23,10 @@ interface HeaderProps {
   onChangeViewMode: (mode: 'standard' | 'zen' | 'partner') => void;
   onOpenDraftStudio: () => void;
   onOpenWorkspaceModal: () => void;
+  onOpenVersionHistory: () => void;
+  snapshotCount?: number;
+  ambientMood?: 'aurora' | 'amber' | 'frost';
+  onChangeAmbientMood?: (mood: 'aurora' | 'amber' | 'frost') => void;
   user: User | null;
   onSignIn: () => Promise<void>;
   onSignOut: () => Promise<void>;
@@ -38,6 +42,10 @@ export const Header: React.FC<HeaderProps> = ({
   onChangeViewMode,
   onOpenDraftStudio,
   onOpenWorkspaceModal,
+  onOpenVersionHistory,
+  snapshotCount = 0,
+  ambientMood = 'aurora',
+  onChangeAmbientMood,
   user,
   onSignIn,
   onSignOut,
@@ -46,6 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [tempTitle, setTempTitle] = useState(title);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showMoodMenu, setShowMoodMenu] = useState(false);
 
   const handleTitleSubmit = () => {
     setIsEditingTitle(false);
@@ -57,14 +66,16 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-30 h-14 border-b border-stone-200/80 dark:border-stone-800 bg-white/80 dark:bg-stone-950/80 backdrop-blur-md px-4 flex items-center justify-between transition-colors">
+    <header className="sticky top-0 z-40 h-14 border-b border-white/10 bg-black/25 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.25)] px-4 sm:px-6 flex items-center justify-between transition-colors">
       {/* Left: Brand & Document Title */}
-      <div className="flex items-center gap-3 min-w-0">
-        <div className="flex items-center gap-2 pr-3 border-r border-stone-200 dark:border-stone-800 shrink-0">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-400 flex items-center justify-center text-white shadow-xs">
-            <Feather className="w-4 h-4" />
+      <div className="flex items-center gap-3.5 min-w-0">
+        <div className="flex items-center gap-2 pr-3.5 border-r border-white/10 shrink-0">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500/80 via-rose-500/80 to-indigo-500/80 p-0.5 shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+            <div className="w-full h-full rounded-[10px] bg-black/40 backdrop-blur-md flex items-center justify-center text-white">
+              <Feather className="w-4 h-4 text-amber-300 drop-shadow-[0_0_6px_rgba(245,158,11,0.6)]" />
+            </div>
           </div>
-          <span className="font-serif font-black tracking-tight text-sm text-stone-900 dark:text-stone-100 hidden sm:inline">
+          <span className="font-serif font-black tracking-tight text-sm text-white/95 hidden sm:inline drop-shadow-sm">
             Museflow
           </span>
         </div>
@@ -79,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
               onChange={(e) => setTempTitle(e.target.value)}
               onBlur={handleTitleSubmit}
               onKeyDown={(e) => e.key === 'Enter' && handleTitleSubmit()}
-              className="px-2 py-0.5 font-serif font-medium text-sm text-stone-900 dark:text-white bg-stone-100 dark:bg-stone-800 rounded-md border border-stone-300 dark:border-stone-700 outline-none w-56 sm:w-72"
+              className="px-2.5 py-1 font-serif font-medium text-sm text-white bg-white/10 backdrop-blur-md rounded-lg border border-white/20 outline-none w-56 sm:w-72 shadow-inner focus:ring-1 focus:ring-amber-400/50"
             />
           ) : (
             <button
@@ -89,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({
                 setIsEditingTitle(true);
               }}
               title="Click to rename"
-              className="text-left font-serif font-medium text-sm text-stone-800 dark:text-stone-200 hover:text-amber-600 dark:hover:text-amber-400 truncate max-w-[160px] sm:max-w-xs px-1.5 py-0.5 rounded transition"
+              className="text-left font-serif font-medium text-sm text-stone-200 hover:text-white truncate max-w-[160px] sm:max-w-xs px-2 py-1 rounded-lg hover:bg-white/5 transition border border-transparent hover:border-white/10"
             >
               {title || 'Untitled Piece'}
             </button>
@@ -97,33 +108,95 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Middle: Writing telemetry stats */}
-      <div className="hidden lg:flex items-center gap-3 text-xs text-stone-500 dark:text-stone-400">
-        <span className="flex items-center gap-1 font-mono">
-          <strong className="text-stone-800 dark:text-stone-200">{wordCount}</strong> words
+      {/* Middle: Writing telemetry stats in subtle glass */}
+      <div className="hidden lg:flex items-center gap-2.5 px-3 py-1 rounded-full bg-white/[0.04] backdrop-blur-md border border-white/10 text-xs text-stone-300">
+        <span className="font-mono">
+          <strong className="text-white font-semibold">{wordCount}</strong> words
         </span>
-        <span className="text-stone-300 dark:text-stone-700">•</span>
+        <span className="text-white/20">·</span>
         <span>
-          ~<strong className="text-stone-800 dark:text-stone-200">{readingTimeMinutes}</strong> min read
+          ~<strong className="text-white font-semibold">{readingTimeMinutes}</strong> min read
         </span>
-        <span className="text-stone-300 dark:text-stone-700">•</span>
-        <span className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-          <Sparkles className="w-3 h-3" />
-          <span>Thought Partner Active</span>
+        <span className="text-white/20">·</span>
+        <span className="flex items-center gap-1 text-amber-300">
+          <Sparkles className="w-3 h-3 text-amber-400" />
+          <span>Glass Muse Active</span>
         </span>
       </div>
 
       {/* Right: Actions, View Mode & Auth */}
       <div className="flex items-center gap-2">
+        {/* Glass Mood Preset Selector */}
+        {onChangeAmbientMood && (
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setShowMoodMenu(!showMoodMenu)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] active:bg-white/[0.18] text-stone-200 text-xs font-medium border border-white/15 backdrop-blur-md transition shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+              title="Change Glass Ambient Glow"
+            >
+              <Palette className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden xl:inline capitalize">{ambientMood}</span>
+            </button>
+
+            {showMoodMenu && (
+              <div className="absolute right-0 mt-2 w-48 rounded-2xl bg-stone-900/80 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.6)] py-2 z-50 text-xs text-stone-200">
+                <div className="px-3 py-1 text-[10px] font-mono uppercase tracking-wider text-stone-400">
+                  Glass Caustic Mood
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChangeAmbientMood('aurora');
+                    setShowMoodMenu(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-left hover:bg-white/10 transition ${
+                    ambientMood === 'aurora' ? 'text-amber-300 font-semibold bg-white/5' : ''
+                  }`}
+                >
+                  <span>🌌 Midnight Aurora</span>
+                  {ambientMood === 'aurora' && <span className="text-xs">✓</span>}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChangeAmbientMood('amber');
+                    setShowMoodMenu(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-left hover:bg-white/10 transition ${
+                    ambientMood === 'amber' ? 'text-amber-300 font-semibold bg-white/5' : ''
+                  }`}
+                >
+                  <span>🕯️ Smoked Amber</span>
+                  {ambientMood === 'amber' && <span className="text-xs">✓</span>}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onChangeAmbientMood('frost');
+                    setShowMoodMenu(false);
+                  }}
+                  className={`w-full flex items-center justify-between px-3 py-2 text-left hover:bg-white/10 transition ${
+                    ambientMood === 'frost' ? 'text-amber-300 font-semibold bg-white/5' : ''
+                  }`}
+                >
+                  <span>🧊 Nordic Ice</span>
+                  {ambientMood === 'frost' && <span className="text-xs">✓</span>}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* View Mode controls */}
-        <div className="hidden md:flex items-center bg-stone-100 dark:bg-stone-850 p-0.5 rounded-lg text-xs">
+        <div className="hidden md:flex items-center bg-white/[0.06] backdrop-blur-md border border-white/10 p-0.5 rounded-xl text-xs">
           <button
             type="button"
             onClick={() => onChangeViewMode('zen')}
-            className={`p-1.5 rounded-md transition ${
+            className={`p-1.5 rounded-lg transition ${
               viewMode === 'zen'
-                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-xs'
-                : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                ? 'bg-white/20 text-white shadow-xs font-semibold'
+                : 'text-stone-400 hover:text-white'
             }`}
             title="Zen Focus (Distraction Free)"
           >
@@ -132,10 +205,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => onChangeViewMode('standard')}
-            className={`p-1.5 rounded-md transition ${
+            className={`p-1.5 rounded-lg transition ${
               viewMode === 'standard'
-                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-xs'
-                : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                ? 'bg-white/20 text-white shadow-xs font-semibold'
+                : 'text-stone-400 hover:text-white'
             }`}
             title="Standard Canvas"
           >
@@ -144,14 +217,14 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => onChangeViewMode('partner')}
-            className={`p-1.5 rounded-md transition ${
+            className={`p-1.5 rounded-lg transition ${
               viewMode === 'partner'
-                ? 'bg-white dark:bg-stone-700 text-stone-900 dark:text-white shadow-xs'
-                : 'text-stone-500 hover:text-stone-900 dark:hover:text-white'
+                ? 'bg-white/20 text-white shadow-xs font-semibold'
+                : 'text-stone-400 hover:text-white'
             }`}
             title="Split Thought Partner View"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
           </button>
         </div>
 
@@ -159,20 +232,36 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           type="button"
           onClick={onOpenDraftStudio}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 text-amber-800 dark:text-amber-300 font-semibold text-xs border border-amber-300/40 dark:border-amber-800/40 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 to-orange-500/20 hover:from-amber-500/35 hover:to-orange-500/30 text-amber-200 font-semibold text-xs border border-amber-400/30 backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.15)] transition"
         >
-          <FilePlus className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-          <span className="hidden sm:inline">Co-Author Piece</span>
+          <FilePlus className="w-3.5 h-3.5 text-amber-300" />
+          <span className="hidden sm:inline">Co-Author</span>
         </button>
 
         {/* Workspace Sync & Export */}
         <button
           type="button"
           onClick={onOpenWorkspaceModal}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 text-xs font-semibold border border-stone-200 dark:border-stone-700 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-stone-200 text-xs font-semibold border border-white/15 backdrop-blur-md transition shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
         >
           <Share2 className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Workspace</span>
+        </button>
+
+        {/* Version History */}
+        <button
+          type="button"
+          onClick={onOpenVersionHistory}
+          className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.12] text-stone-200 text-xs font-semibold border border-white/15 backdrop-blur-md transition shadow-[inset_0_1px_0_0_rgba(255,255,255,0.15)]"
+          title="Document Version History & Snapshots"
+        >
+          <History className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">History</span>
+          {snapshotCount > 0 && (
+            <span className="inline-flex items-center justify-center px-1.5 py-0.2 rounded-full text-[10px] font-mono font-bold bg-amber-400/25 text-amber-300 border border-amber-400/30">
+              {snapshotCount}
+            </span>
+          )}
         </button>
 
         {/* Auth / Profile menu */}
@@ -181,16 +270,16 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               type="button"
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+              className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-white/10 transition border border-transparent hover:border-white/15"
             >
               {user.photoURL ? (
                 <img
                   src={user.photoURL}
                   alt={user.displayName || 'User'}
-                  className="w-7 h-7 rounded-full object-cover border border-amber-500/30"
+                  className="w-7 h-7 rounded-full object-cover border border-amber-400/40 shadow-xs"
                 />
               ) : (
-                <div className="w-7 h-7 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-amber-500 text-white font-bold text-xs flex items-center justify-center shadow-xs">
                   {(user.displayName || user.email || 'U')[0].toUpperCase()}
                 </div>
               )}
@@ -198,9 +287,9 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {showUserMenu && (
-              <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-xl py-2 z-50 text-xs">
-                <div className="px-3 py-1.5 border-b border-stone-100 dark:border-stone-800">
-                  <div className="font-semibold text-stone-900 dark:text-white truncate">
+              <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-stone-900/85 backdrop-blur-2xl border border-white/15 shadow-[0_20px_50px_rgba(0,0,0,0.6)] py-2 z-50 text-xs">
+                <div className="px-3 py-1.5 border-b border-white/10">
+                  <div className="font-semibold text-white truncate">
                     {user.displayName || 'Author'}
                   </div>
                   <div className="text-[11px] text-stone-400 truncate">{user.email}</div>
@@ -211,7 +300,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setShowUserMenu(false);
                     onSignOut();
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition text-left"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-rose-400 hover:bg-white/10 transition text-left"
                 >
                   <LogOut className="w-3.5 h-3.5" />
                   <span>Sign out</span>
@@ -220,7 +309,12 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </div>
         ) : (
-          <GoogleSignInButton onClick={onSignIn} isLoading={isSigningIn} text="Connect" />
+          <GoogleSignInButton
+            onClick={onSignIn}
+            isLoading={isSigningIn}
+            text="Connect"
+            className="bg-white/10 hover:bg-white/20 text-white border-white/20 backdrop-blur-md"
+          />
         )}
       </div>
     </header>

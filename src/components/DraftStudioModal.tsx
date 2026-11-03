@@ -142,19 +142,19 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xl p-6 text-stone-900 dark:text-stone-100">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-150">
+      <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-3xl bg-black/65 backdrop-blur-2xl border border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.25)] p-6 text-stone-100">
         {/* Header */}
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-stone-200 dark:border-stone-800">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center justify-center shadow-xs">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-serif font-bold text-stone-900 dark:text-white">
+              <h2 className="text-base font-serif font-bold text-white">
                 Co-Author a New Piece
               </h2>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className="text-xs text-stone-400">
                 Provide your core premise, notes, and attachments — Gemini drafts with depth.
               </p>
             </div>
@@ -163,7 +163,7 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 p-1.5 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+            className="text-stone-400 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -172,7 +172,7 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Prompt */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300 mb-1.5">
               What do you want to explore or write about?
             </label>
             <textarea
@@ -182,14 +182,14 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
               onChange={(e) => setPrompt(e.target.value)}
               disabled={isLoading}
               placeholder="e.g. Why the most interesting ideas happen at the messy boundary of two unrelated disciplines, referencing recent breakthroughs in AI and biology..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500/50 text-sm placeholder:text-stone-400 leading-relaxed font-serif"
+              className="w-full px-4 py-3 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 focus:outline-none focus:ring-1 focus:ring-amber-400/60 focus:border-amber-400/60 text-sm text-white placeholder:text-stone-500 leading-relaxed font-serif shadow-inner"
             />
           </div>
 
           {/* File Attachments Dropzone */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-stone-300">
                 Attach Notes, PDFs, Images or Research
               </label>
               <span className="text-[11px] text-stone-400">
@@ -205,10 +205,10 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-4 text-center cursor-pointer transition ${
+              className={`border-2 border-dashed rounded-2xl p-5 text-center cursor-pointer transition backdrop-blur-md ${
                 isDragging
-                  ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/20'
-                  : 'border-stone-300 dark:border-stone-700 hover:border-amber-400/80 bg-stone-50/50 dark:bg-stone-950/40'
+                  ? 'border-amber-400 bg-amber-500/20'
+                  : 'border-white/15 hover:border-amber-400/50 bg-white/[0.04] hover:bg-white/[0.08]'
               }`}
             >
               <input
@@ -220,8 +220,8 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
                 accept=".txt,.md,.pdf,.csv,.json,.doc,.docx,image/*"
               />
               <UploadCloud className="w-6 h-6 mx-auto mb-1.5 text-stone-400" />
-              <p className="text-xs font-medium text-stone-700 dark:text-stone-300">
-                Drop files here, or <span className="text-amber-600 underline">browse</span>
+              <p className="text-xs font-medium text-stone-200">
+                Drop files here, or <span className="text-amber-400 underline">browse</span>
               </p>
               <p className="text-[10px] text-stone-400 mt-0.5">
                 Supports research docs, outlines, interview transcripts, and reference imagery
@@ -234,14 +234,14 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
                 {attachedFiles.map((file) => (
                   <div
                     key={file.id}
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-xs"
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.07] border border-white/15 text-xs text-stone-200 backdrop-blur-md"
                   >
                     {file.isBase64 ? (
-                      <FileImage className="w-3.5 h-3.5 text-indigo-500" />
+                      <FileImage className="w-3.5 h-3.5 text-indigo-400" />
                     ) : (
-                      <FileText className="w-3.5 h-3.5 text-amber-600" />
+                      <FileText className="w-3.5 h-3.5 text-amber-400" />
                     )}
-                    <span className="max-w-[140px] truncate text-stone-700 dark:text-stone-300">
+                    <span className="max-w-[140px] truncate">
                       {file.name}
                     </span>
                     <button
@@ -250,7 +250,7 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
                         e.stopPropagation();
                         removeFile(file.id);
                       }}
-                      className="text-stone-400 hover:text-stone-600 dark:hover:text-white p-0.5"
+                      className="text-stone-400 hover:text-white p-0.5"
                     >
                       <X className="w-3 h-3" />
                     </button>
@@ -263,16 +263,16 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
           {/* Style & Voice Configuration */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
             <div>
-              <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
+              <label className="block text-xs font-medium text-stone-300 mb-1">
                 Format
               </label>
               <select
                 value={format}
                 onChange={(e) => setFormat(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 text-xs focus:ring-1 focus:ring-amber-500"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs text-white focus:ring-1 focus:ring-amber-400/50"
               >
                 {FORMAT_PRESETS.map((fmt) => (
-                  <option key={fmt} value={fmt}>
+                  <option key={fmt} value={fmt} className="bg-stone-900 text-white">
                     {fmt}
                   </option>
                 ))}
@@ -280,16 +280,16 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
+              <label className="block text-xs font-medium text-stone-300 mb-1">
                 Tone & Voice
               </label>
               <select
                 value={tone}
                 onChange={(e) => setTone(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 text-xs focus:ring-1 focus:ring-amber-500"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs text-white focus:ring-1 focus:ring-amber-400/50"
               >
                 {TONE_PRESETS.map((t) => (
-                  <option key={t} value={t}>
+                  <option key={t} value={t} className="bg-stone-900 text-white">
                     {t}
                   </option>
                 ))}
@@ -297,16 +297,16 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
+              <label className="block text-xs font-medium text-stone-300 mb-1">
                 Target Length
               </label>
               <select
                 value={targetLength}
                 onChange={(e) => setTargetLength(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 text-xs focus:ring-1 focus:ring-amber-500"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs text-white focus:ring-1 focus:ring-amber-400/50"
               >
                 {LENGTH_PRESETS.map((len) => (
-                  <option key={len.val} value={len.val}>
+                  <option key={len.val} value={len.val} className="bg-stone-900 text-white">
                     {len.label}
                   </option>
                 ))}
@@ -314,43 +314,47 @@ export const DraftStudioModal: React.FC<DraftStudioModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-stone-600 dark:text-stone-400 mb-1">
+              <label className="block text-xs font-medium text-stone-300 mb-1">
                 AI Intelligence Model
               </label>
               <select
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-300 dark:border-stone-700 text-xs focus:ring-1 focus:ring-amber-500 font-mono"
+                className="w-full px-3.5 py-2 rounded-xl bg-black/40 backdrop-blur-md border border-white/15 text-xs text-amber-200 focus:ring-1 focus:ring-amber-400/50 font-mono"
               >
-                <option value="gemini-3.8-flash">gemini-3.8-flash (Fast & Highly Capable)</option>
-                <option value="gemini-4-argon">gemini-4-argon (Deepest Reasoning & Synthesis)</option>
+                <option value="gemini-3.8-flash" className="bg-stone-900 text-white">
+                  gemini-3.8-flash (Fast & Highly Capable)
+                </option>
+                <option value="gemini-4-argon" className="bg-stone-900 text-white">
+                  gemini-4-argon (Deepest Reasoning)
+                </option>
               </select>
             </div>
           </div>
 
           {/* Submit */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
             <button
               type="button"
               onClick={onClose}
               disabled={isLoading}
-              className="px-4 py-2 text-xs font-medium text-stone-600 dark:text-stone-400 hover:text-stone-900 transition"
+              className="px-4 py-2 text-xs font-medium text-stone-300 hover:text-white transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={!prompt.trim() || isLoading}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white font-semibold text-xs transition shadow-sm disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:from-amber-600 text-black font-semibold text-xs transition shadow-[0_0_15px_rgba(245,158,11,0.35)] disabled:opacity-40"
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-black" />
                   <span>Drafting piece...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4" />
+                  <Sparkles className="w-4 h-4 text-black" />
                   <span>Generate Initial Draft</span>
                 </>
               )}

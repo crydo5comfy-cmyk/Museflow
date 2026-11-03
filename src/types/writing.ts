@@ -60,3 +60,15 @@ export interface TaskItem {
   priority?: string;
   selected?: boolean;
 }
+
+export interface DocSnapshot {
+  id: string;
+  docId: string;
+  title: string;
+  content: string;
+  timestamp: number;
+  label: string;
+  wordCount: number;
+  isAutoSnapshot?: boolean;
+}
+

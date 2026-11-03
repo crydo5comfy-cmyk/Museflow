@@ -218,22 +218,22 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-        <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-2xl p-6 text-stone-900 dark:text-stone-100">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-in fade-in duration-150">
+        <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl bg-black/65 backdrop-blur-2xl border border-white/20 shadow-[0_30px_90px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.25)] p-6 text-stone-100">
           {/* Header */}
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-stone-200 dark:border-stone-800">
+          <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
             <div>
-              <h2 className="text-base font-serif font-bold text-stone-900 dark:text-white">
+              <h2 className="text-base font-serif font-bold text-white">
                 Google Workspace Integrations
               </h2>
-              <p className="text-xs text-stone-500 dark:text-stone-400">
+              <p className="text-xs text-stone-400">
                 Connect your writing directly to Google Docs, Slides, Tasks, and Gmail.
               </p>
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 p-1.5 rounded-lg hover:bg-stone-100 dark:hover:bg-stone-800 transition"
+              className="text-stone-400 hover:text-white p-1.5 rounded-xl hover:bg-white/10 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -241,35 +241,39 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
 
           {/* Auth Banner if not signed in */}
           {!user ? (
-            <div className="p-4 mb-5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 text-center">
-              <p className="text-xs text-amber-800 dark:text-amber-300 font-medium mb-3">
+            <div className="p-4 mb-5 rounded-2xl bg-amber-500/10 border border-amber-400/25 text-center backdrop-blur-md">
+              <p className="text-xs text-amber-200 font-medium mb-3">
                 Sign in with Google to enable seamless exports to your Google Workspace account.
               </p>
-              <GoogleSignInButton onClick={onSignIn} isLoading={isSigningIn} />
+              <GoogleSignInButton
+                onClick={onSignIn}
+                isLoading={isSigningIn}
+                className="bg-white/10 hover:bg-white/20 text-white border-white/20"
+              />
             </div>
           ) : (
-            <div className="flex items-center justify-between px-3 py-2 mb-4 rounded-xl bg-stone-50 dark:bg-stone-950 border border-stone-200 dark:border-stone-800 text-xs">
-              <span className="text-stone-600 dark:text-stone-400">
-                Connected as: <strong className="text-stone-800 dark:text-white">{user.email}</strong>
+            <div className="flex items-center justify-between px-3.5 py-2 mb-4 rounded-xl bg-white/[0.04] backdrop-blur-md border border-white/10 text-xs">
+              <span className="text-stone-300">
+                Connected as: <strong className="text-white">{user.email}</strong>
               </span>
-              <span className="flex items-center gap-1 text-[11px] text-emerald-600 font-medium">
+              <span className="flex items-center gap-1 text-[11px] text-emerald-300 font-medium">
                 <Check className="w-3.5 h-3.5" /> Workspace Ready
               </span>
             </div>
           )}
 
           {/* Tabs */}
-          <div className="flex items-center gap-1 pb-3 border-b border-stone-200 dark:border-stone-800 mb-4 overflow-x-auto">
+          <div className="flex items-center gap-1.5 pb-3 border-b border-white/10 mb-4 overflow-x-auto">
             <button
               type="button"
               onClick={() => setActiveTab('docs')}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition ${
                 activeTab === 'docs'
-                  ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800'
-                  : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
+                  ? 'bg-blue-500/20 text-blue-300 border border-blue-400/40 shadow-xs'
+                  : 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              <FileText className="w-4 h-4 text-blue-600" />
+              <FileText className="w-4 h-4 text-blue-400" />
               <span>Google Docs</span>
             </button>
             <button
@@ -277,11 +281,11 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
               onClick={() => setActiveTab('slides')}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition ${
                 activeTab === 'slides'
-                  ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800'
-                  : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
+                  ? 'bg-amber-500/20 text-amber-300 border border-amber-400/40 shadow-xs'
+                  : 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              <Presentation className="w-4 h-4 text-amber-600" />
+              <Presentation className="w-4 h-4 text-amber-400" />
               <span>Google Slides</span>
             </button>
             <button
@@ -289,11 +293,11 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
               onClick={() => setActiveTab('tasks')}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition ${
                 activeTab === 'tasks'
-                  ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800'
-                  : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 shadow-xs'
+                  : 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              <CheckSquare className="w-4 h-4 text-emerald-600" />
+              <CheckSquare className="w-4 h-4 text-emerald-400" />
               <span>Google Tasks</span>
             </button>
             <button
@@ -301,32 +305,32 @@ export const WorkspaceModal: React.FC<WorkspaceModalProps> = ({
               onClick={() => setActiveTab('gmail')}
               className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium transition ${
                 activeTab === 'gmail'
-                  ? 'bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200/80 dark:border-rose-800'
-                  : 'text-stone-600 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-800'
+                  ? 'bg-rose-500/20 text-rose-300 border border-rose-400/40 shadow-xs'
+                  : 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              <Mail className="w-4 h-4 text-rose-600" />
+              <Mail className="w-4 h-4 text-rose-400" />
               <span>Gmail Draft</span>
             </button>
           </div>
 
           {/* Feedback & Result Alerts */}
           {errorMsg && (
-            <div className="mb-4 p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs text-rose-700 dark:text-rose-300">
+            <div className="mb-4 p-3 rounded-2xl bg-rose-950/40 border border-rose-500/30 text-xs text-rose-300 backdrop-blur-md">
               {errorMsg}
             </div>
           )}
 
           {successLink && (
-            <div className="mb-4 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 text-xs flex items-center justify-between gap-2">
-              <span className="text-emerald-800 dark:text-emerald-300 font-medium">
+            <div className="mb-4 p-3 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs flex items-center justify-between gap-2 backdrop-blur-md">
+              <span className="text-emerald-200 font-medium">
                 {successLink.text}
               </span>
               <a
                 href={successLink.url}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center gap-1 font-semibold text-emerald-700 underline shrink-0 hover:text-emerald-900"
+                className="flex items-center gap-1 font-semibold text-emerald-300 underline shrink-0 hover:text-white"
               >
                 <span>Open in Tab</span>
                 <ExternalLink className="w-3.5 h-3.5" />
